@@ -1,0 +1,28 @@
+# TODO List for AutoTestUtility
+
+Data Extraction:
+- Implement actual data extraction logic using CAD API.
+- [ ] Implement EXE launcher with CAD folder input
+- [ ] Handle output CSV and JSON parsing
+- [ ] Compare output CSV with input CSV (with tolerance)
+- [ ] Compare output JSON with input JSON
+- [ ] Log mismatches and pass/fail results
+
+Input & Output JSON:
+- Implement JSON serialization/deserialization based on extracted data.
+
+Output JSON (Windows):
+- Implement Windows-specific JSON formatting and file conventions.
+
+Output JSON (Linux):
+- Implement Linux-specific JSON formatting and file conventions.
+
+Auto Drawing Creation:
+- Implement auto drawing creation logic.
+
+UI/UX Enhancements:
+- Add tooltips and help icons.
+- Enhance progress bar animations and visuals.
+
+Packaging:
+- Configure PyInstaller for standalone Windows .exe.
