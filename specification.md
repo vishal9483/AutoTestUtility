@@ -139,3 +139,154 @@ modules/ – Folder with individual module logic
 utils/ – Folder with helper utilities
 
 Documentation files as mentioned above
+ZZZTEST
+
+# Data Extraction Module
+
+**Objective:** Automate data extraction from CAD files and validate the results against known reference data.
+
+### 1. EXE Launcher
+Launch the data extraction executable (e.g. `DataExtraction.exe`) with the CAD files folder path as input.
+Wait until the process completes.
+
+### 2. CSV Output Handling
+- The executable emits a single CSV file (`data.csv`) under:
+
+  ```text
+  <OutputFolder>/DataExtraction/csv/data.csv
+  ```
+
+- The first column in the CSV corresponds to the CAD file name.
+- Compare this output CSV against the reference CSV located at:
+
+  ```text
+  <InputFolder>/DataExtraction/csv/data.csv
+  ```
+
+- Perform numeric comparisons within a configurable tolerance.
+
+### 3. JSON Output Handling
+- One JSON file is generated per CAD file and saved to:
+
+  ```text
+  <OutputFolder>/DataExtraction/JSONs/{file_id}.json
+  ```
+
+- Compare each output JSON against its reference JSON at:
+
+  ```text
+  <InputFolder>/DataExtraction/JSONs/{file_id}.json
+  ```
+
+- Log any mismatches or pass/fail results.
+
+📌 Module: Input & Output JSON Comparator
+🔧 Requirements:
+Directory Setup
+
+Read all files from a folder named CAD Files.
+
+For each file, run an external .exe that dumps:
+
+input JSON
+
+output JSON
+to:
+
+pgsql
+Copy
+Edit
+C:\Temp\DataExtraction\*.json
+Copy Files
+
+After dump is complete, copy the JSONs from C:\Temp\DataExtraction\ to a defined output folder:
+
+swift
+Copy
+Edit
+output_folder/JSON/<CADFileName>/*.json
+Folder Structure
+
+Ensure the output folder structure is:
+
+javascript
+Copy
+Edit
+output_folder/
+  └── JSON/
+      └── <CADFileName>/
+          ├── file1.json
+          ├── file2.json
+          └── ...
+Maintain exact same structure for input_folder:
+
+javascript
+Copy
+Edit
+input_folder/
+  └── JSON/
+      └── <CADFileName>/
+          ├── file1.json
+          ├── file2.json
+          └── ...
+Comparison Logic
+
+For each .json file in output_folder/JSON/<CADFileName>/, find the corresponding file in input_folder/JSON/<CADFileName>/.
+
+Perform a deep field-by-field comparison.
+
+Generate Report
+
+Output a diff report capturing:
+
+Which JSON file has changes
+
+The specific field(s) that differ
+
+The values in both input and output
+
+The reason, if derivable, for the difference
+
+Example Output Format (JSON or CSV):
+
+json
+Copy
+Edit
+{
+  "CADFileName": "abc123",
+  "Differences": [
+    {
+      "File": "file1.json",
+      "Field": "dimension.width",
+      "InputValue": 120.5,
+      "OutputValue": 115.0,
+      "DifferenceReason": "Precision loss during transformation"
+    },
+    ...
+  ]
+}
+Enhancements (Optional, if time permits)
+
+Handle missing files gracefully with a warning.
+
+Support nested JSON structures.
+
+Normalize field types before comparison (e.g., float vs int).
+
+✅ Inputs to the Agent
+Path to CAD Files
+
+Path to input_folder
+
+Path to output_folder
+
+.exe file path to run for JSON dumping
+
+💡 Notes
+Ensure the .exe process completes before copying JSONs.
+
+Consider using jsondiff, deepdiff, or custom recursive logic to compare fields.
+
+Use logging to track mismatches and process failures.
+
+Let me know if you'd like the full Python scaffolding or a .specification.md and todo.txt for this task.
